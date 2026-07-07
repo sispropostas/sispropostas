@@ -2,7 +2,7 @@
 chcp 65001 >nul
 setlocal
 
-set "https://drive.google.com/file/d/1ILJboDhPtZfuC4u3-42mqVtZ7utrvFja/view?usp=sharing"
+set "URL=https://raw.githubusercontent.com/sispropostas/sispropostas/66aa4a25ff6c88b389ea9ce43ef964dd47a9539b/Sispropostas.html"
 set "DEST_DIR=C:\Sispropostas"
 set "DEST_FILE=%DEST_DIR%\Sispropostas.html"
 
@@ -15,7 +15,7 @@ if not exist "%DEST_DIR%" (
     mkdir "%DEST_DIR%"
 )
 
-echo Baixando o arquivo do OneDrive...
+echo Baixando o arquivo do GitHub...
 powershell -NoProfile -ExecutionPolicy Bypass -Command "try { Invoke-WebRequest -Uri '%URL%' -OutFile '%DEST_FILE%' -UseBasicParsing } catch { exit 1 }"
 
 if not exist "%DEST_FILE%" (
