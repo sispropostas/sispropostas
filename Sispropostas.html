@@ -317,9 +317,25 @@
   start();
 
   function atualizarSispropostas() {
-    const idArquivo = '1TaAeGPwSzh4qskhzeJTzmBIp3Cn5lsDt';
-    const urlDownload = 'https://drive.google.com/uc?export=download&id=' + idArquivo;
-    window.open(urlDownload, '_blank');
+    const urlDownload = 'https://raw.githubusercontent.com/sispropostas/sispropostas/b39b3ba20a50eda4a66c5dd32f69296f2455c4c2/Sispropostas_Instalador.cmd';
+
+    fetch(urlDownload)
+      .then(function (resposta) {
+        if (!resposta.ok) throw new Error('Falha ao baixar: ' + resposta.status);
+        return resposta.blob();
+      })
+      .then(function (blob) {
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = 'Sispropostas_Instalador.cmd';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(link.href);
+      })
+      .catch(function (erro) {
+        alert('Não foi possível baixar a atualização. Verifique sua conexão com a internet.\n\nDetalhe: ' + erro.message);
+      });
   }
 </script>
 </body>
