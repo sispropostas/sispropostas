@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SISpropostas</title>
+<style>
+  :root {
+    --verde-basa: #00543C;
+    --verde-claro: #2E7D5B;
+    --dourado: #C9A24B;
+    --fundo: #F5F3EE;
+    --texto: #1C2321;
+    --texto-suave: #5A645F;
+    --borda: #DAD5C7;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    height: 100%;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: var(--fundo);
+    color: var(--texto);
+  }
+
+  body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+
+  header {
+    background: linear-gradient(135deg, var(--verde-basa) 0%, #003D2B 100%);
+    color: #fff;
+    padding: 28px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+    border-bottom: 3px solid var(--dourado);
+  }
+
+  .marca {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .marca .icone {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    background: var(--dourado);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+  }
+
+  .marca h1 {
+    font-size: 1.35rem;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+  }
+
+  .marca span {
+    display: block;
+    font-size: 0.78rem;
+    color: #CFE3D8;
+    font-weight: 400;
+    margin-top: 2px;
+  }
+
+  .header-direita {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .selo {
+    font-size: 0.72rem;
+    background: rgba(255,255,255,0.12);
+    padding: 6px 12px;
+    border-radius: 20px;
+    color: #E7F0EA;
+    border: 1px solid rgba(255,255,255,0.2);
+  }
+
+  .btn-atualizar {
+    font-size: 0.78rem;
+    font-weight: 600;
+    background: var(--dourado);
+    color: #1C2321;
+    padding: 8px 16px;
+    border-radius: 20px;
+    border: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: filter 0.15s ease;
+  }
+
+  .btn-atualizar:hover {
+    filter: brightness(1.08);
+  }
+
+  .btn-atualizar:active {
+    filter: brightness(0.95);
+  }
+
+  main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    max-width: 1100px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 36px 24px 24px;
+    gap: 24px;
+  }
+
+  .boas-vindas {
+    background: #fff;
+    border: 1px solid var(--borda);
+    border-left: 4px solid var(--verde-claro);
+    border-radius: 10px;
+    padding: 24px 28px;
+  }
+
+  .boas-vindas h2 {
+    font-size: 1.15rem;
+    color: var(--verde-basa);
+    margin-bottom: 8px;
+  }
+
+  .boas-vindas p {
+    color: var(--texto-suave);
+    font-size: 0.94rem;
+    line-height: 1.55;
+    max-width: 720px;
+  }
+
+  .passos {
+    display: flex;
+    gap: 18px;
+    margin-top: 18px;
+    flex-wrap: wrap;
+  }
+
+  .passo {
+    flex: 1;
+    min-width: 180px;
+    background: var(--fundo);
+    border: 1px solid var(--borda);
+    border-radius: 8px;
+    padding: 14px 16px;
+  }
+
+  .passo .n {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--dourado);
+    letter-spacing: 1px;
+  }
+
+  .passo p {
+    font-size: 0.85rem;
+    color: var(--texto);
+    margin-top: 4px;
+  }
+
+  .chat-container {
+    flex: 1;
+    background: #fff;
+    border: 1px solid var(--borda);
+    border-radius: 10px;
+    overflow: hidden;
+    min-height: 560px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+  }
+
+  .chat-header {
+    background: #fff;
+    padding: 12px 20px;
+    border-bottom: 1px solid var(--borda);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.85rem;
+    color: var(--texto-suave);
+  }
+
+  .bolinha {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: #3CB371;
+    box-shadow: 0 0 0 3px rgba(60,179,113,0.18);
+  }
+
+  #webchat {
+    flex: 1;
+    width: 100%;
+  }
+
+  footer {
+    text-align: center;
+    padding: 16px;
+    font-size: 0.75rem;
+    color: var(--texto-suave);
+  }
+
+  @media (max-width: 640px) {
+    header { padding: 20px; }
+    main { padding: 24px 14px; }
+    .passos { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="marca">
+    <div class="icone">🌱</div>
+    <div>
+      <h1>SISpropostas 3.0</h1>
+      <span>Ambiente de testes — Agente de Análise de Propostas</span>
+    </div>
+  </div>
+  <div class="header-direita">
+    <button class="btn-atualizar" onclick="atualizarSispropostas()">⬇ Atualizar Sispropostas</button>
+    <div class="selo">Uso interno · GERAG</div>
+  </div>
+</header>
+
+<main>
+  <section class="boas-vindas">
+    <h2>Bem-vindo(a) ao teste do agente</h2>
+    <p>
+      Esta página é um ambiente de testes para o agente de IA que vai conversar com as
+      assistências técnicas, coletar informações e receber os documentos da proposta
+      para análise automática de qualidade.
+    </p>
+    <div class="passos">
+      <div class="passo">
+        <div class="n">PASSO 1</div>
+        <p>Inicie a conversa com o agente abaixo.</p>
+      </div>
+      <div class="passo">
+        <div class="n">PASSO 2</div>
+        <p>Responda às perguntas e envie os documentos solicitados.</p>
+      </div>
+      <div class="passo">
+        <div class="n">PASSO 3</div>
+        <p>Acompanhe o resultado da análise diretamente na conversa.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="chat-container">
+    <div class="chat-header">
+      <span class="bolinha"></span>
+      Agente SISpropostas — conectado
+    </div>
+    <div id="webchat"></div>
+  </section>
+</main>
+
+<footer>
+  SISpropostas 2.0 — Página de testes interna · Não distribuir externamente
+</footer>
+
+<script src="https://cdn.botframework.com/botframework-webchat/latest/webchat.js"></script>
+<script>
+  const tokenEndpoint = "https://112e42aef886e5d781e1b10add53de.e3.environment.api.powerplatform.com/powervirtualagents/botsbyschema/cr683_AgenteSISPropostas/directline/token?api-version=2022-03-01-preview";
+
+  async function start() {
+    const res = await fetch(tokenEndpoint);
+    const { token } = await res.json();
+
+    const directLine = window.WebChat.createDirectLine({ token });
+
+    directLine.connectionStatus$.subscribe(status => {
+      if (status === 2) { // Online
+        directLine.postActivity({
+          type: 'event',
+          name: 'startConversation',
+          from: { id: 'user' }
+        }).subscribe();
+      }
+    });
+
+    window.WebChat.renderWebChat(
+      {
+        directLine,
+        styleOptions: {
+          accent: '#00543C',
+          bubbleBackground: '#F5F3EE',
+          bubbleFromUserBackground: '#00543C',
+          bubbleFromUserTextColor: '#FFFFFF',
+          botAvatarBackgroundColor: '#00543C',
+          botAvatarInitials: 'IA',
+          userAvatarBackgroundColor: '#C9A24B',
+          userAvatarInitials: 'EU'
+        }
+      },
+      document.getElementById('webchat')
+    );
+  }
+
+  start();
+
+  function atualizarSispropostas() {
+    const idArquivo = '1TaAeGPwSzh4qskhzeJTzmBIp3Cn5lsDt';
+    const urlDownload = 'https://drive.google.com/uc?export=download&id=' + idArquivo;
+    window.open(urlDownload, '_blank');
+  }
+</script>
+</body>
+</html>
