@@ -8,7 +8,7 @@
   // Fica aqui, no topo do arquivo, para ser facil de localizar.
   // Esta mesma variavel e usada mais abaixo no script principal.
   // ============================================================
-  const versao = "1.1";
+  const versao = "1.2";
 </script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SISpropostas</title>
@@ -379,7 +379,7 @@
 
 <!-- Aviso exibido apenas quando a versao local for menor que a do GitHub -->
 <div id="avisoDesatualizado" class="aviso-desatualizado">
-  ⚠ Está disponível uma nova versão do Sispropostas.
+  &#9888; Está disponível uma nova versão do Sispropostas.
   <button onclick="atualizarSispropostas()">Clique aqui para atualizar</button> Para a versão "<span id="versaoGithubTexto"></span>"
 </div>
 
@@ -655,6 +655,7 @@
         if (!achou) return;
         const versaoGithub = achou[1];
         if (versaoMenorQue(versao, versaoGithub)) {
+          document.getElementById('versaoGithubTexto').textContent = versaoGithub;
           document.getElementById('avisoDesatualizado').style.display = 'block';
         }
       })
