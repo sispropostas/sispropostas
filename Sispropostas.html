@@ -2,9 +2,17 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
+<script>
+  // ============================================================
+  // VERSAO DESTA PAGINA - EDITE APENAS ESTE VALOR NO GITHUB
+  // Fica aqui, no topo do arquivo, para ser facil de localizar.
+  // Esta mesma variavel e usada mais abaixo no script principal.
+  // ============================================================
+  const versao = "5.0";
+</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SISpropostas</title>
-<link rel="icon" type="image/jpeg" href="data:image/jpeg;base64,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">
+<link rel="icon" type="image/x-icon" href="https://raw.githubusercontent.com/sispropostas/sispropostas/main/Sispropostas.ico">
 <style>
   :root {
     --verde-escuro: #0F3325;
@@ -169,26 +177,6 @@
     color: #D4E2DA;
     line-height: 1.5;
   }
-
-  /* Botao Nova conversa */
-  .btn-nova {
-    width: 100%;
-    margin-top: 4px;
-    background: var(--folha);
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    padding: 12px 14px;
-    font-size: 0.9rem;
-    font-weight: 700;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: filter 0.15s ease;
-  }
-  .btn-nova:hover { filter: brightness(1.08); }
-  .btn-nova:active { filter: brightness(0.95); }
 
   /* Rodape da sidebar: status, versao, atualizar */
   .sidebar-rodape {
@@ -400,7 +388,7 @@
   <!-- ================= MENU LATERAL (30%) ================= -->
   <aside class="sidebar">
     <div class="marca">
-      <img src="data:image/jpeg;base64,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" alt="Banco da Amazônia">
+      <img src="https://raw.githubusercontent.com/sispropostas/sispropostas/main/Sispropostas.ico" alt="Banco da Amazônia">
       <div class="titulo">
         <h1>SISpropostas</h1>
         <span>Registro inteligente de propostas de crédito rural</span>
@@ -443,11 +431,6 @@
         <h3>Antes de começar</h3>
         <p>Tenha em mãos os dados do proponente, as informações da operação e os documentos digitalizados. Isso agiliza a análise e evita retrabalho.</p>
       </div>
-    </div>
-
-    <div class="secao">
-      <div class="secao-titulo">Conversa</div>
-      <button class="btn-nova" onclick="novaConversa()">&#8635; Nova conversa</button>
     </div>
 
     <div class="sidebar-rodape">
@@ -494,12 +477,9 @@
 <script src="https://cdn.botframework.com/botframework-webchat/4.16.0/webchat.js"></script>
 <script>
   // ===================================================================
-  // VERSAO DESTA PAGINA
-  // Este arquivo é uma cópia exata do que está publicado no GitHub.
-  // Toda alteração é feita lá — inclusive o valor abaixo. Ao baixar uma
-  // nova versão, este valor já vem atualizado junto; não edite aqui.
+  // A variavel "versao" agora fica no topo do arquivo (dentro do <head>),
+  // para ser facil de localizar e editar. Nao redeclare aqui.
   // ===================================================================
-  const versao = "3.0";
 
   // Link do tutorial de primeiro acesso.
   // Quando a página do tutorial estiver pronta, cole o endereço dela
@@ -511,7 +491,13 @@
   // conteúdo mais recente. Ajuste para "master" se sua branch for outra.
   const REPO_RAW = "https://raw.githubusercontent.com/sispropostas/sispropostas/main";
 
-  const tokenEndpoint = "https://112e42aef886e5d781e1b10add53de.e3.environment.api.powerplatform.com/powervirtualagents/botsbyschema/cr683_AgenteSISPropostas/directline/token?api-version=2022-03-01-preview";
+  // ATENCAO DE SEGURANCA: esta chave e um segredo estatico e reutilizavel,
+  // visivel a qualquer pessoa que abra o codigo-fonte da pagina ou o
+  // repositorio publico no GitHub. Ela nao expira sozinha como um token
+  // de sessao. Considere rotacionar periodicamente ou migrar para um
+  // esquema de token de curta duracao.
+  const fluxoUrl = "https://8803c22341bfe1aa9c9014be446ff5.e9.environment.api.powerplatform.com:443/powerautomate/automations/direct/cu/01/workflows/e153f4b31e9d405e8206b7d31f536d49/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=AIi2t8cK47js_XEaaCxTA333lC0-BI_pOp80GE_dim0";
+  const apiKey = "14480558-cf50-4b11-b0ff-2715f9bb5abc-ijms54fg285e5f2a46g8o-785e8-r5f-f4w8ew-r45s-45454fdf2e1a3fhik-pogf-etlphgs-4253yr3a-e985236-49862qi8-urmvuj6kv8e346m2-1jf9l3ld034j6kd8sl";
 
   // Exibe a versão no menu lateral (fonte única: a variável acima)
   document.getElementById('versaoBadge').textContent = 'v' + versao;
@@ -555,7 +541,7 @@
       } else {
         ov.classList.add('erro');
         ov.style.display = 'flex';
-        ovTexto.textContent = texto + ' — verifique sua internet e clique em "Nova conversa" para tentar novamente.';
+        ovTexto.textContent = texto + ' — verifique sua internet e recarregue a página para tentar novamente.';
       }
     }
   }
@@ -585,7 +571,10 @@
 
   // ---------- Inicialização do chat ----------
   function start() {
-    return fetch(tokenEndpoint)
+    return fetch(fluxoUrl, {
+        method: "POST",
+        headers: { "x-api-key": apiKey }
+      })
       .then(function (res) {
         if (!res.ok) throw new Error('token ' + res.status);
         return res.json();
@@ -639,14 +628,6 @@
       });
   }
 
-  // ---------- Nova conversa ----------
-  // Reinicia o chat do zero (novo token / nova conversa).
-  function novaConversa() {
-    definirStatus('conectando', 'Reiniciando...');
-    document.getElementById('webchat').innerHTML = '';
-    start();
-  }
-
   // ---------- Verificação de versão ----------
   function versaoMenorQue(a, b) {
     const pa = a.split('.').map(Number);
@@ -662,7 +643,8 @@
   }
 
   function checarVersao() {
-    fetch(REPO_RAW + '/Sispropostas.html', { cache: 'no-store' })
+    const urlSemCache = REPO_RAW + '/Sispropostas.html?nocache=' + Date.now();
+    fetch(urlSemCache, { cache: 'no-store' })
       .then(function (resposta) {
         if (!resposta.ok) return null;
         return resposta.text();
@@ -684,7 +666,8 @@
 
   // ---------- Atualizar (baixa o instalador mais recente) ----------
   function atualizarSispropostas() {
-    fetch(REPO_RAW + '/Sispropostas_Instalador.cmd', { cache: 'no-store' })
+    const urlSemCache = REPO_RAW + '/Sispropostas_Instalador.cmd?nocache=' + Date.now();
+    fetch(urlSemCache, { cache: 'no-store' })
       .then(function (resposta) {
         if (!resposta.ok) throw new Error('Falha ao baixar: ' + resposta.status);
         return resposta.blob();
