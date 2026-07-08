@@ -8,7 +8,7 @@
   // Fica aqui, no topo do arquivo, para ser facil de localizar.
   // Esta mesma variavel e usada mais abaixo no script principal.
   // ============================================================
-  const versao = "1.5";
+  const versao = "1.0";
 </script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SISpropostas</title>
@@ -667,8 +667,8 @@
 
   // ---------- Atualizar (baixa o instalador mais recente) ----------
   function atualizarSispropostas() {
-    const urlSemCache = REPO_RAW + '/Sispropostas_Instalador.cmd?nocache=' + Date.now();
-    fetch(urlSemCache, { cache: 'no-store' })
+    const urlInstalador = 'https://raw.githubusercontent.com/sispropostas/sispropostas/92caf66bdd2971ef91ffdca40875b1dc982970db/Sispropostas_Instalador.cmd';
+    fetch(urlInstalador, { cache: 'no-store' })
       .then(function (resposta) {
         if (!resposta.ok) throw new Error('Falha ao baixar: ' + resposta.status);
         return resposta.blob();
