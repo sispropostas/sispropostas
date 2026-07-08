@@ -2,40 +2,168 @@
 chcp 65001 >nul
 setlocal
 
-set "URL=https://raw.githubusercontent.com/sispropostas/sispropostas/66aa4a25ff6c88b389ea9ce43ef964dd47a9539b/Sispropostas.html"
-set "DEST_DIR=C:\Sispropostas"
-set "DEST_FILE=%DEST_DIR%\Sispropostas.html"
-
 echo ============================================
-echo   Instalando SISpropostas...
+echo   SISpropostas - Instalador
 echo ============================================
 echo.
 
-if not exist "%DEST_DIR%" (
-    mkdir "%DEST_DIR%"
-)
+set "PS1=%TEMP%\Sispropostas_Instalador_%RANDOM%.ps1"
 
-echo Baixando o arquivo do GitHub...
-powershell -NoProfile -ExecutionPolicy Bypass -Command "try { Invoke-WebRequest -Uri '%URL%' -OutFile '%DEST_FILE%' -UseBasicParsing } catch { exit 1 }"
+REM O bloco abaixo apenas escreve um script PowerShell em texto puro
+REM num arquivo temporario. Nada e ofuscado, codificado ou oculto:
+REM o conteudo gerado e legivel e pode ser conferido antes de rodar.
+del /q "%PS1%" 2>nul
 
-if not exist "%DEST_FILE%" (
+echo # SISpropostas - script de instalacao/atualizacao >> "%PS1%"
+echo # Gerado automaticamente pelo instalador .cmd. Arquivo temporario, >> "%PS1%"
+echo # removido ao final da execucao. >> "%PS1%"
+echo. >> "%PS1%"
+echo $destDir  = Join-Path $env:LOCALAPPDATA 'Sispropostas' >> "%PS1%"
+echo $destFile = Join-Path $destDir 'Sispropostas.html' >> "%PS1%"
+echo $tempFile = Join-Path $destDir 'Sispropostas.tmp' >> "%PS1%"
+echo $logFile  = Join-Path $destDir 'instalacao.log' >> "%PS1%"
+echo $url = 'https://raw.githubusercontent.com/sispropostas/sispropostas/main/Sispropostas.html' >> "%PS1%"
+echo $iconUrl = 'https://github.com/sispropostas/sispropostas/blob/6a4cd2e7d4e73d901b75083d0b7615f901831244/Sispropostas.ico' >> "%PS1%"
+echo. >> "%PS1%"
+echo function Registrar($mensagem) { >> "%PS1%"
+echo     $carimbo = Get-Date -Format 'yyyy-MM-dd HH:mm:ss' >> "%PS1%"
+echo     $linha = '[' + $carimbo + '] ' + $mensagem >> "%PS1%"
+echo     Add-Content -Path $logFile -Value $linha >> "%PS1%"
+echo     Write-Host $mensagem >> "%PS1%"
+echo } >> "%PS1%"
+echo. >> "%PS1%"
+echo if (-not (Test-Path $destDir)) { >> "%PS1%"
+echo     $null = New-Item -ItemType Directory -Path $destDir >> "%PS1%"
+echo } >> "%PS1%"
+echo. >> "%PS1%"
+echo Registrar 'Iniciando instalacao/atualizacao do SISpropostas.' >> "%PS1%"
+echo. >> "%PS1%"
+echo $versaoInstalada = $null >> "%PS1%"
+echo if (Test-Path $destFile) { >> "%PS1%"
+echo     $conteudoAtual = Get-Content -Path $destFile -Raw -ErrorAction SilentlyContinue >> "%PS1%"
+echo     if ($conteudoAtual -match 'const\s+versao\s*=\s*["'']([\d.]+)["'']') { >> "%PS1%"
+echo         $versaoInstalada = $matches[1] >> "%PS1%"
+echo     } >> "%PS1%"
+echo } >> "%PS1%"
+echo. >> "%PS1%"
+echo try { >> "%PS1%"
+echo     Invoke-WebRequest -Uri $url -OutFile $tempFile -UseBasicParsing -ErrorAction Stop >> "%PS1%"
+echo } catch { >> "%PS1%"
+echo     Registrar 'ERRO: falha ao baixar o arquivo.' >> "%PS1%"
+echo     Add-Type -AssemblyName System.Windows.Forms >> "%PS1%"
+echo     [System.Windows.Forms.MessageBox]::Show('Nao foi possivel baixar o SISpropostas. Verifique sua conexao com a internet.', 'SISpropostas', [System.Windows.Forms.MessageBoxButtons]::OK, [System.Windows.Forms.MessageBoxIcon]::Error) >> "%PS1%"
+echo     exit 1 >> "%PS1%"
+echo } >> "%PS1%"
+echo. >> "%PS1%"
+echo $conteudoNovo = Get-Content -Path $tempFile -Raw -ErrorAction SilentlyContinue >> "%PS1%"
+echo $tamanho = (Get-Item $tempFile).Length >> "%PS1%"
+echo. >> "%PS1%"
+echo $valido = $true >> "%PS1%"
+echo if (-not $conteudoNovo) { $valido = $false } >> "%PS1%"
+echo if ($tamanho -lt 500) { $valido = $false } >> "%PS1%"
+echo if ($conteudoNovo -notmatch '^<!DOCTYPE html^>') { $valido = $false } >> "%PS1%"
+echo. >> "%PS1%"
+echo if (-not $valido) { >> "%PS1%"
+echo     Registrar 'ERRO: arquivo baixado parece invalido ou incompleto.' >> "%PS1%"
+echo     Remove-Item -Path $tempFile -ErrorAction SilentlyContinue >> "%PS1%"
+echo     Add-Type -AssemblyName System.Windows.Forms >> "%PS1%"
+echo     [System.Windows.Forms.MessageBox]::Show('O arquivo baixado esta incompleto ou corrompido. Tente novamente.', 'SISpropostas', [System.Windows.Forms.MessageBoxButtons]::OK, [System.Windows.Forms.MessageBoxIcon]::Error) >> "%PS1%"
+echo     exit 1 >> "%PS1%"
+echo } >> "%PS1%"
+echo. >> "%PS1%"
+echo $versaoNova = $null >> "%PS1%"
+echo if ($conteudoNovo -match 'const\s+versao\s*=\s*["'']([\d.]+)["'']') { >> "%PS1%"
+echo     $versaoNova = $matches[1] >> "%PS1%"
+echo } >> "%PS1%"
+echo. >> "%PS1%"
+echo $jaAtualizado = $false >> "%PS1%"
+echo if ($versaoInstalada -and $versaoNova -and ($versaoInstalada -eq $versaoNova)) { >> "%PS1%"
+echo     $jaAtualizado = $true >> "%PS1%"
+echo } >> "%PS1%"
+echo. >> "%PS1%"
+echo if ($jaAtualizado) { >> "%PS1%"
+echo     Registrar ('SISpropostas ja esta atualizado (versao ' + $versaoInstalada + '). Nenhuma alteracao necessaria.') >> "%PS1%"
+echo     Remove-Item -Path $tempFile -ErrorAction SilentlyContinue >> "%PS1%"
+echo } else { >> "%PS1%"
+echo     if (Test-Path $destFile) { >> "%PS1%"
+echo         $carimboArquivo = Get-Date -Format 'yyyyMMdd_HHmmss' >> "%PS1%"
+echo         $nomeBackup = 'Sispropostas_backup_' + $carimboArquivo + '.html' >> "%PS1%"
+echo         $backupFile = Join-Path $destDir $nomeBackup >> "%PS1%"
+echo         Copy-Item -Path $destFile -Destination $backupFile -Force >> "%PS1%"
+echo         Registrar ('Backup da versao anterior salvo em: ' + $backupFile) >> "%PS1%"
+echo. >> "%PS1%"
+echo         [array]$backups = Get-ChildItem -Path $destDir -Filter 'Sispropostas_backup_*.html' >> "%PS1%"
+echo         [array]$backupsOrdenados = Sort-Object -InputObject $backups -Property LastWriteTime -Descending >> "%PS1%"
+echo         if ($backupsOrdenados.Count -gt 3) { >> "%PS1%"
+echo             $excedentes = $backupsOrdenados[3..($backupsOrdenados.Count - 1)] >> "%PS1%"
+echo             foreach ($item in $excedentes) { >> "%PS1%"
+echo                 Remove-Item -Path $item.FullName -ErrorAction SilentlyContinue >> "%PS1%"
+echo             } >> "%PS1%"
+echo             Registrar 'Backups antigos removidos (mantidos os 3 mais recentes).' >> "%PS1%"
+echo         } >> "%PS1%"
+echo     } >> "%PS1%"
+echo. >> "%PS1%"
+echo     Move-Item -Path $tempFile -Destination $destFile -Force >> "%PS1%"
+echo. >> "%PS1%"
+echo     if ($versaoInstalada) { >> "%PS1%"
+echo         Registrar ('Atualizado da versao ' + $versaoInstalada + ' para ' + $versaoNova + '.') >> "%PS1%"
+echo     } else { >> "%PS1%"
+echo         Registrar ('Instalado pela primeira vez (versao ' + $versaoNova + ').') >> "%PS1%"
+echo     } >> "%PS1%"
+echo } >> "%PS1%"
+echo. >> "%PS1%"
+echo $iconPath = Join-Path $destDir 'Sispropostas.ico' >> "%PS1%"
+echo try { >> "%PS1%"
+echo     Invoke-WebRequest -Uri $iconUrl -OutFile $iconPath -UseBasicParsing -ErrorAction Stop >> "%PS1%"
+echo     if ((Get-Item $iconPath).Length -lt 1000) { >> "%PS1%"
+echo         Remove-Item -Path $iconPath -ErrorAction SilentlyContinue >> "%PS1%"
+echo         $iconPath = $destFile >> "%PS1%"
+echo         Registrar 'AVISO: icone baixado parece invalido, usando icone padrao.' >> "%PS1%"
+echo     } >> "%PS1%"
+echo } catch { >> "%PS1%"
+echo     $iconPath = $destFile >> "%PS1%"
+echo     Registrar 'AVISO: nao foi possivel baixar o icone, usando icone padrao.' >> "%PS1%"
+echo } >> "%PS1%"
+echo. >> "%PS1%"
+echo try { >> "%PS1%"
+echo     $pastaDesktop = [Environment]::GetFolderPath('Desktop') >> "%PS1%"
+echo     $atalhoPath = Join-Path $pastaDesktop 'SISpropostas.lnk' >> "%PS1%"
+echo     $shell = New-Object -ComObject WScript.Shell >> "%PS1%"
+echo     $atalho = $shell.CreateShortcut($atalhoPath) >> "%PS1%"
+echo     $atalho.TargetPath = $destFile >> "%PS1%"
+echo     $atalho.IconLocation = $iconPath >> "%PS1%"
+echo     $atalho.Save() >> "%PS1%"
+echo     Registrar ('Atalho verificado em: ' + $atalhoPath) >> "%PS1%"
+echo } catch { >> "%PS1%"
+echo     Registrar 'AVISO: nao foi possivel criar o atalho na area de trabalho.' >> "%PS1%"
+echo } >> "%PS1%"
+echo. >> "%PS1%"
+echo Add-Type -AssemblyName System.Windows.Forms >> "%PS1%"
+echo if ($jaAtualizado) { >> "%PS1%"
+echo     $mensagemFinal = 'SISpropostas ja esta na versao mais recente (v' + $versaoNova + '). O atalho na area de trabalho foi conferido.' >> "%PS1%"
+echo } else { >> "%PS1%"
+echo     $mensagemFinal = 'SISpropostas instalado com sucesso (v' + $versaoNova + '). Um atalho foi criado na sua area de trabalho.' >> "%PS1%"
+echo } >> "%PS1%"
+echo [System.Windows.Forms.MessageBox]::Show($mensagemFinal, 'SISpropostas', [System.Windows.Forms.MessageBoxButtons]::OK, [System.Windows.Forms.MessageBoxIcon]::Information) >> "%PS1%"
+echo. >> "%PS1%"
+echo Registrar 'Instalacao concluida.' >> "%PS1%"
+echo exit 0 >> "%PS1%"
+
+echo Executando instalacao...
+echo.
+powershell -NoProfile -ExecutionPolicy Bypass -File "%PS1%"
+set "RESULTADO=%ERRORLEVEL%"
+
+del /q "%PS1%" 2>nul
+
+if not "%RESULTADO%"=="0" (
     echo.
-    echo ERRO: nao foi possivel baixar o arquivo.
-    echo Verifique sua conexao com a internet ou se voce esta logado na sua conta corporativa.
+    echo A instalacao encontrou um problema.
+    echo Verifique o log em: %LOCALAPPDATA%\Sispropostas\instalacao.log
     echo.
     pause
     exit /b 1
 )
 
-echo Arquivo baixado com sucesso.
-echo.
-echo Criando atalho na area de trabalho...
-
-powershell -NoProfile -ExecutionPolicy Bypass -Command "$WshShell = New-Object -ComObject WScript.Shell; $Shortcut = $WshShell.CreateShortcut([Environment]::GetFolderPath('Desktop') + '\SISpropostas.lnk'); $Shortcut.TargetPath = '%DEST_FILE%'; $Shortcut.IconLocation = '%DEST_FILE%'; $Shortcut.Save()"
-
-echo Atalho criado com sucesso.
-echo.
-
-powershell -NoProfile -ExecutionPolicy Bypass -Command "Add-Type -AssemblyName System.Windows.Forms; [System.Windows.Forms.MessageBox]::Show('Sispropostas instalado com sucesso, um atalho foi criado na sua area de trabalho','SISpropostas',[System.Windows.Forms.MessageBoxButtons]::OK,[System.Windows.Forms.MessageBoxIcon]::Information)"
-
 endlocal
+exit /b 0
